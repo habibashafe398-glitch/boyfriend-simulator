@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Boyfriend Simulator</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(#ffc0cb, #ffe6f0);
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 { font-size: 26px; }
+    p { font-size: 18px; }
+
+    button {
+      width: 90%;
+      max-width: 360px;
+      padding: 15px;
+      margin: 10px auto;
+      display: block;
+      border: none;
+      border-radius: 16px;
+      font-size: 18px;
+      cursor: pointer;
+      background-color: #ff5f8a;
+      color: white;
+    }
+
+    .nav-btn {
+      background-color: #ff9bb5;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1 id="question"></h1>
+  <p id="subtitle">Choose wisely.</p>
+
+  <button onclick="choose(0)" id="btn0"></button>
+  <button onclick="choose(1)" id="btn1"></button>
+  <button onclick="choose(2)" id="btn2"></button>
+
+  <div id="result"></div>
+
+  <button class="nav-btn" onclick="prevQuestion()">⏮ Previous</button>
+  <button class="nav-btn" onclick="nextQuestion()">⏭ Next</button>
+
+  <audio id="correctSound" src="https://www.myinstants.com/media/sounds/soft-notification.mp3"></audio>
+  <audio id="wrongSound" src="https://www.myinstants.com/media/sounds/iphone_notification.mp3"></audio>
+
+  <script>
+    let current = 0;
+    let selectedAnswers = [];
+
+    const questions = [
+      {
+        q: "do u hate me💔",
+        options: [
+          "wait lemme call u back",
+          "no u are my everything i can't breathe without you",
+          "no YOU hate me"
+        ],
+        correct: 1,
+        responses: [
+          "❌ Interesting choice. Incorrect.",
+          "✅ Correct. Bare minimum achieved.",
+          "❌ Bold strategy. Failed."
+        ]
+      },
+      {
+        q: "If i say “Do you think we can go out today”",
+        options: ["I don’t know", "Momken agelk showaya", "Send a meme"],
+        correct: 1,
+        responses: [
+          "❌ UNACCEPTABLE.",
+          "✅ YAAAAAYYYYYYYYYYYY",
+          "⚠️ Meme appreciated. Problem unresolved."
+        ]
+      },
+      {
+        q: "💬 Am I annoying? ",
+        options: ["Yes", "No", "Why would you think that?"],
+        correct: 2,
+        responses: [
+          "❌ RIP.",
+          "⚠️ Suspicious answer.",
+          "✅ Excellent recovery."
+        ]
+      },
+      {
+        q: "📱If i say “brahtak”",
+        options: ["okay ya habibty", "Ask what's wrong", "Send a meme"],
+        correct: 1,
+        responses: [
+          "❌ You walked right into that.",
+          "✅ Smart. Survival instincts detected.",
+          "⚠️ Meme appreciated. Problem unresolved."
+        ]
+      },
+      {
+        q: "📅 what would u say if You forgot an important date",
+        options: ["uhh i don't know", "Apologize sincerely", "Blame the calendar"],
+        correct: 1,
+        responses: [
+          "❌ DON'T KNOW WHAAT?",
+          "✅ Apology accepted. For now.",
+          "❌ Calendar has been cleared of all charges."
+        ]
+      }
+    ];
+
+    function loadQuestion() {
+      const q = questions[current];
+      document.getElementById("question").innerText = q.q;
+
+      q.options.forEach((opt, i) => {
+        document.getElementById("btn" + i).innerText = opt;
+      });
+
+      document.getElementById("result").innerText = "";
+    }
+
+    function choose(choice) {
+      selectedAnswers[current] = choice;
+
+      const q = questions[current];
+      document.getElementById("result").innerText = q.responses[choice];
+
+      const sound = choice === q.correct
+        ? document.getElementById("correctSound")
+        : document.getElementById("wrongSound");
+
+      sound.currentTime = 0;
+      sound.play();
+    }
+
+    function nextQuestion() {
+      if (current < questions.length - 1) {
+        current++;
+        loadQuestion();
+      } else {
+        document.getElementById("question").innerText = "🎉 Simulation Complete";
+        document.getElementById("subtitle").innerText =
+          "Final review: Needs improvement, but acceptable.";
+        document.querySelectorAll("button").forEach(b => b.style.display = "none");
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        loadQuestion();
+      }
+    }
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>
+
